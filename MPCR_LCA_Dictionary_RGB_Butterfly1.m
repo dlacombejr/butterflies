@@ -27,14 +27,9 @@ clear all
 close all
 clc
 
-
-
 % make_patches
 % make_dictionary
 test_patches
-
-
-
 
 end
 
@@ -47,7 +42,6 @@ function make_patches
 ps=16;
 
 for k=1:6
-    
     
     foldername=folder(k)
     
@@ -100,24 +94,17 @@ for k=1:6
         X=[X, c];
         
     end
-    
-    
+     
     X=whiten_patches(X);
    
-    
     save(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened1.mat'],'X','-v7.3')
     
 end
 
-
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
 
 
 
@@ -139,7 +126,7 @@ W = randn(patch_size, neurons, nk);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for k=1:6
-      
+    
     X1=load_train_patches(k)
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -202,7 +189,6 @@ function test_patches
 
 load('Butterfly_LCA_W.mat')
 
-
 s=0.15;
 patch_size=256*3;
 neurons=256;
@@ -233,10 +219,9 @@ d=[];
 for k=1:nk
     
     X2=load_test_patches(k)
-
     
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     WW = WW*diag(1./sqrt(sum(WW.^2,1)));
     G = WW'*WW - eye(neurons*nk);
     
@@ -251,7 +236,7 @@ for k=1:nk
             pause
         end
         
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         b = WW'*X;
         
@@ -265,7 +250,7 @@ for k=1:nk
             
         end
         
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         a1=sum(a.^2,2);
         
@@ -310,47 +295,26 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function foldername=folder(k)
 
 switch k
-        case 1
-            foldername='admiral';
-        case 2
-            foldername='black_swallowtail';
-        case 3
-            foldername='machaon';
-        case 4
-            foldername='monarch_open';
-        case 5
-            foldername='peacock';
-        case 6
-            foldername='zebra';
-        otherwise
-            disp('error');
-    end
+    case 1
+        foldername='admiral';
+    case 2
+        foldername='black_swallowtail';
+    case 3
+        foldername='machaon';
+    case 4
+        foldername='monarch_open';
+    case 5
+        foldername='peacock';
+    case 6
+        foldername='zebra';
+    otherwise
+        disp('error');
+end
 
 
 end
@@ -364,24 +328,23 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function X1=load_train_patches(k)
 
-    ps=16;
+ps=16;
 
-    foldername=folder(k)
-    
-    cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
-    
-    data=load(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened.mat'])
-    
-    X0=data.X;
-    
-    X0=sqrt(0.1)*X0/sqrt(mean(var(X0)));
-    
-    X1=X0(:,1:floor(end/2));
+foldername=folder(k)
+
+cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
+
+data=load(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened.mat'])
+
+X0=data.X;
+
+X0=sqrt(0.1)*X0/sqrt(mean(var(X0)));
+
+X1=X0(:,1:floor(end/2));
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
 
@@ -390,24 +353,23 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function X2=load_test_patches(k)
 
-    ps=16;
+ps=16;
 
-    foldername=folder(k)
-        
-    cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
-    
-    data=load(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened.mat']);
-    
-    X0=data.X;
-    
-    X0=sqrt(0.1)*X0/sqrt(mean(var(X0)));
-    
-    X2=X0(:,floor(end/2)+1:end);
+foldername=folder(k)
+
+cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
+
+data=load(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened.mat']);
+
+X0=data.X;
+
+X0=sqrt(0.1)*X0/sqrt(mean(var(X0)));
+
+X2=X0(:,floor(end/2)+1:end);
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
 
@@ -419,17 +381,15 @@ function X=whiten_patches(X)
 % Whiten Images in Matlab
 % http://xcorr.net/2013/04/30/whiten-images-in-matlab/
 
-    X = bsxfun(@minus,X,mean(X)); %remove mean
-    fX = fft(fft(X,[],2),[],3); %fourier transform of the images
-    spectr = sqrt(mean(abs(fX).^2)); %Mean spectrum
-    X = ifft(ifft(bsxfun(@times,fX,1./spectr),[],2),[],3); %whitened X
-    
-  
+X = bsxfun(@minus,X,mean(X)); %remove mean
+fX = fft(fft(X,[],2),[],3); %fourier transform of the images
+spectr = sqrt(mean(abs(fX).^2)); %Mean spectrum
+X = ifft(ifft(bsxfun(@times,fX,1./spectr),[],2),[],3); %whitened X
+
+
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 
 
@@ -451,7 +411,6 @@ D = D / max(D(:));
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
 
@@ -478,6 +437,3 @@ end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-

@@ -27,8 +27,8 @@ clear all
 close all
 clc
 
-make_patches
-make_dictionary
+% make_patches
+% make_dictionary
 test_patches
 
 end
@@ -62,21 +62,17 @@ for k=1:6
     
     dr1=dir('*.jpg')
     
-    f1={dr1.name}; % get only filenames to cell
+    f1={dr1.name}; 
     X=[];
     
-    for i=1:length(f1) % for each image
+    for i=1:length(f1) 
         
         i
         
         a1=f1{i};
         
         b1=imread(a1);
-        
-        imagesc(b1)
-        
-        pause
-        
+    
         s1=size(b1);
         
         if(s1(1) > s1(2))
@@ -89,11 +85,7 @@ for k=1:6
         
         b1 = b1 - min(b1(:));
         b1 = b1 / max(b1(:));
-        
-        imagesc(b1)
-        
-        pause
-        
+
         c1r=im2col(b1(:,:,1),[ps ps]);
         c1g=im2col(b1(:,:,2),[ps ps]);
         c1b=im2col(b1(:,:,3),[ps ps]);
@@ -106,8 +98,9 @@ for k=1:6
      
     X=whiten_patches(X);
    
+    disp('saving...')
     save(['HahnColorPatches_' num2str(ps) '_Butterflies_' foldername '_whitened1.mat'],'X','-v7.3')
-    
+    disp('...done')
 end
 
 end
@@ -136,7 +129,7 @@ W = randn(patch_size, neurons, nk);
 
 for k=1:6
     
-    X1=load_train_patches(k)
+    X1=load_train_patches(k); 
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -201,7 +194,7 @@ load('Butterfly_LCA_W.mat')
 s=0.15;
 patch_size=256*3;
 neurons=256;
-batch_size=300;
+batch_size=1000;
 nk=size(W,3);
 
 for k=1:nk
@@ -227,7 +220,7 @@ d=[];
 
 for k=1:nk
     
-    X2=load_test_patches(k)
+    X2=load_test_patches(k);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -239,11 +232,6 @@ for k=1:nk
         r=randperm(size(X2,2));
         
         X=X2(:,r(1:batch_size));
-        
-        for i=1:100
-            imagesc(reshape(X(:,i),16,16,3))
-            pause
-        end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
@@ -339,7 +327,7 @@ function X1=load_train_patches(k)
 
 ps=16;
 
-foldername=folder(k)
+foldername=folder(k);
 
 cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
 
@@ -364,7 +352,7 @@ function X2=load_test_patches(k)
 
 ps=16;
 
-foldername=folder(k)
+foldername=folder(k);
 
 cd('/Users/williamedwardhahn/Desktop/thesis/butterflies/butterflydata')
 

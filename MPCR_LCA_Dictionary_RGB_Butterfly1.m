@@ -17,6 +17,10 @@
 % "Sparse coding via thresholding and
 % local competition in neural circuits."
 %
+% 2)Selesnick, Ivan W. 
+% Sparse Signal Restoration. 
+% http://cnx.org/content/m32168/. 
+%
 %------------------------------------------------------%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +34,7 @@ clc
 % make_patches
 % make_dictionary
 test_patches
-
+% 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,7 +137,7 @@ for k=1:6
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    for j=1:500
+    for j=1:1000
         
         r=randperm(size(X1,2));
         
@@ -148,7 +152,7 @@ for k=1:6
         
         u = zeros(neurons,batch_size);
         
-        for i =1:200
+        for i =1:20
             
             a=u.*(abs(u) > s);
             
@@ -158,7 +162,7 @@ for k=1:6
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        W(:,:,k) = W(:,:,k) + (5/batch_size)*((X-W(:,:,k)*a)*a');
+        W(:,:,k) = W(:,:,k) + (1/batch_size)*((X-W(:,:,k)*a)*a');
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
@@ -197,14 +201,19 @@ neurons=256;
 batch_size=1000;
 nk=size(W,3);
 
-for k=1:nk
-    subplot(2,3,k)
-    imagesc(filterplotcolor(W(:,:,k)')), drawnow()
-end
-
-figure(1)
-drawnow()
-pause
+% figure(1)
+% drawnow()
+% set(gcf,'color','w');
+% pause
+% 
+% for k=1:nk
+%     subplot(2,3,k)
+%     imagesc(filterplotcolor(W(:,:,k)')), drawnow()
+%     title(folder(k),'Interpreter', 'none', 'FontSize', 20)
+%     pause
+% end
+% 
+% return
 
 WW=[];
 
@@ -217,7 +226,7 @@ end
 % WW=randn(size(WW)); %Randomize weights to test
 
 d=[];
-
+bb=[];
 for k=1:nk
     
     X2=load_test_patches(k);
@@ -232,6 +241,12 @@ for k=1:nk
         r=randperm(size(X2,2));
         
         X=X2(:,r(1:batch_size));
+        
+%         imagesc(filterplotcolor(X(:,1:400)'))
+%         set(gcf,'color','w');
+%         title(folder(k),'Interpreter', 'none', 'FontSize', 20)
+        
+        
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
@@ -263,6 +278,9 @@ for k=1:nk
         bar(b)
         
         
+        
+        
+        
         [b1,b2]=max(b);
         
         if sum(b)==0
@@ -275,7 +293,11 @@ for k=1:nk
         
         subplot(122)
         
-        hist(d,0:1)
+%         hist(d,0:1)
+        
+        bb=[bb; b];
+        
+        plot(bb)
         
         drawnow()
         

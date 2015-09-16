@@ -42,7 +42,6 @@ channels = 3; % number of chennels
 ims=64; %maximum size of longest image dimension
 patch_size = ps ^ 2 * channels; % vectorized patch size
 neurons = 256; % number of neurons
-W = randn(patch_size, neurons, nk); % random weights
 maxIter = 1000; % max iterations
 s = 0.15; % threshold value
 

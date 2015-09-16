@@ -2,7 +2,9 @@
 
 % set up path
 path = 'butterflyphotos/';
+uPath = 'utilities/'; 
 addpath(genpath(path))
+addpath(genpath(uPath))
 
 % get folder names
 folderNames = dir(path);
